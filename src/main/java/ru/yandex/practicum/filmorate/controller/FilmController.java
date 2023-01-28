@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class FilmController {
     private static long filmId = 1;
-    private static final LocalDate RELEASE_DATE_CONSTRAINT = LocalDate.of(1985, 12, 28);
+    private static final LocalDate RELEASE_DATE_CONSTRAINT = LocalDate.of(1895, 12, 28);
     Map<Long, Film> films = new ConcurrentHashMap<>();
 
     @PostMapping
