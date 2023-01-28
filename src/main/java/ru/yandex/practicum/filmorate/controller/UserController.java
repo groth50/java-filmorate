@@ -14,14 +14,23 @@ public class UserController {
     Map<Long, User> users = new ConcurrentHashMap();
 
     public User addUser(@Valid @RequestBody User user) {
+        validateAndChangeUserName(user);
         return users.put(user.getId(), user);
     }
 
     public User updateUser(@Valid @RequestBody User user) {
+        validateAndChangeUserName(user);
         return users.put(user.getId(), user);
     }
 
     public Collection<User> getAllUsers() {
         return users.values();
+    }
+
+    private static void validateAndChangeUserName(User user) {
+        String name = user.getName();
+        if (name == null || name.isEmpty()) {
+            user.setName(user.getLogin());
+        }
     }
 }

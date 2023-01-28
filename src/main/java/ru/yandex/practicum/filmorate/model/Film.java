@@ -12,7 +12,6 @@ import java.time.Instant;
 @Data
 public class Film {
     private long id;
-    @NotNull
     @NotBlank
     private String name;
     @NotNull
