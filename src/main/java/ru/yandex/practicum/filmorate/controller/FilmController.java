@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -15,27 +16,28 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 @RestController
+@Slf4j
 public class FilmController {
     Map<Long, Film> films = new ConcurrentHashMap<>();
-//    добавление фильма
     public Film addFilm(@Valid @RequestBody Film film) {
         validate(film);
+        log.info("add film");
         return films.put(film.getId(), film);
     }
 
-    //    обновление фильма;
     public Film updateFilm(@Valid @RequestBody Film film) {
         validate(film);
+        log.info("update film");
         return films.put(film.getId(), film);
     }
-//    получение всех фильмов.
     public Collection<Film> getAllFilms() {
         return films.values();
     }
 
     private static void validate(Film film) {
         if (film.getReleaseDate().isBefore(ValidateConfig.RELEASE_DATE_CONSTRAINT)) {
-            throw new ValidationException();
+            log.error("RELEASE_DATE_CONSTRAINT");
+            throw new ValidationException("RELEASE_DATE_CONSTRAINT");
         }
     }
 }
