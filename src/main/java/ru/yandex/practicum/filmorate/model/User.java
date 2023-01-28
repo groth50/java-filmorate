@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 public class User {
@@ -17,7 +18,7 @@ public class User {
     private String login;
     private String name;
     @PastOrPresent
-    private Instant birthday;
+    private LocalDate birthday;
 
     public User() {
         counterId++;
