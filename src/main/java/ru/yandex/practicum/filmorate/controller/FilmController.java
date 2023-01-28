@@ -13,24 +13,34 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 @RestController
-@RequestMapping(path = "/films")
+@RequestMapping("/films")
 @Slf4j
 public class FilmController {
+    private static long filmId = 1;
     private static final LocalDate RELEASE_DATE_CONSTRAINT = LocalDate.of(1985, 12, 28);
     Map<Long, Film> films = new ConcurrentHashMap<>();
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
         validate(film);
+        if (film.getId() < 1) {
+            film.setId(filmId);
+            filmId++;
+        }
         log.info("add film");
-        return films.put(film.getId(), film);
+        films.put(film.getId(), film);
+        return film;
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
         validate(film);
         log.info("update film");
-        return films.put(film.getId(), film);
+        if (!films.containsKey(film.getId())) {
+            throw new RuntimeException();
+        }
+        films.put(film.getId(), film);
+        return film;
     }
 
     @GetMapping

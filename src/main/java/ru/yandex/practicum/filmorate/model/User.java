@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
 
 import javax.validation.constraints.*;
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
@@ -14,14 +13,9 @@ public class User {
     @Email
     private String email;
     @NotBlank
-    @Pattern(regexp = "^\\s")
+//    @Pattern(regexp = "^\\s")
     private String login;
     private String name;
     @PastOrPresent
     private LocalDate birthday;
-
-    public User() {
-        counterId++;
-        this.id = counterId;
-    }
 }
