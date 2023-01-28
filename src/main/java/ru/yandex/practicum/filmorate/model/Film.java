@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Data
 public class Film {
+    private static long counterId = 0;
     private long id;
     @NotBlank
     private String name;
@@ -20,4 +21,8 @@ public class Film {
     private LocalDate releaseDate;
     @Positive
     private int duration;
+    public Film() {
+        counterId++;
+        this.id = counterId;
+    }
 }

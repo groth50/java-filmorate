@@ -7,6 +7,7 @@ import java.time.Instant;
 
 @Data
 public class User {
+    private static long counterId = 0;
     private long id;
     @NotBlank
     @Email
@@ -17,4 +18,9 @@ public class User {
     private String name;
     @PastOrPresent
     private Instant birthday;
+
+    public User() {
+        counterId++;
+        this.id = counterId;
+    }
 }
