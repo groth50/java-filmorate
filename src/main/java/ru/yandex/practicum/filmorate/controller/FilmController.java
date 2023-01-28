@@ -37,7 +37,7 @@ public class FilmController {
         validate(film);
         log.info("update film");
         if (!films.containsKey(film.getId())) {
-            throw new RuntimeException();
+            throw new ValidationException();
         }
         films.put(film.getId(), film);
         return film;
