@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.validate.ValidationException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,8 +44,8 @@ public class FilmController {
     }
 
     @GetMapping
-    public Collection<Film> getAllFilms() {
-        return films.values();
+    public List<Film> getAllFilms() {
+        return List.copyOf(films.values());
     }
 
     private static void validate(Film film) {
