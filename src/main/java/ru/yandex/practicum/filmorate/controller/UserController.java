@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -12,17 +12,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final UserStorage userStorage;
+    private final UserService userService;
 
-    public UserController(UserStorage userStorage) {
-        this.userStorage = userStorage;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         validateAndChangeUserName(user);
         log.info("add user {}", user);
-        userStorage.addUser(user);
+        userService.addUser(user);
         return user;
     }
 
@@ -30,12 +30,12 @@ public class UserController {
     public User updateUser(@Valid @RequestBody User user) {
         validateAndChangeUserName(user);
         log.info("update user {}", user);
-        return userStorage.updateUser(user);
+        return userService.updateUser(user);
     }
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userStorage.getAllUsers();
+        return userService.getAllUsers();
     }
 
     private static void validateAndChangeUserName(User user) {
