@@ -34,4 +34,9 @@ public class InMemoryUserStorage implements UserStorage {
     public List<User> getAllUsers() {
         return List.copyOf(users.values());
     }
+
+    @Override
+    public User getUserById(Long id) {
+        return users.get(id);
+    }
 }

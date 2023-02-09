@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -27,19 +28,43 @@ public class UserService {
         return userStorage.getAllUsers();
     }
 
-    public void addFriend(User user, User friend) {
-        user.getFriends().add(friend.getId());
-        friend.getFriends().add(user.getId());
+    public void addFriend(Long id, Long friendId) {
+        User user = getUserById(id);
+        User friend = getUserById(friendId);
+
+        user.getFriends().add(friendId);
+        friend.getFriends().add(id);
     }
 
-    public void deleteFriend(User user, User friend) {
-        user.getFriends().remove(friend.getId());
-        friend.getFriends().remove(user.getId());
+    public void deleteFriend(Long id, Long friendId) {
+        User user = getUserById(id);
+        User friend = getUserById(friendId);
+
+        user.getFriends().remove(friendId);
+        friend.getFriends().remove(id);
     }
 
-    public List<Long> getMutualFriends(User user, User friend) {
+    public List<User> getCommonFriends(Long id, Long otherId) {
+        User user = getUserById(id);
+        User friend = getUserById(otherId);
         return user.getFriends().stream()
-                .filter(id -> friend.getFriends().contains(id))
+                .filter(userFriendsId -> friend.getFriends().contains(userFriendsId))
+                .map(this::getUserById)
+                .collect(Collectors.toList());
+    }
+
+    public User getUserById(Long id) {
+        User user = userStorage.getUserById(id);
+        if (user == null) {
+            throw new UserNotFoundException(id);
+        }
+        return user;
+    }
+
+    public List<User> getFriends(Long id) {
+        User user = getUserById(id);
+        return user.getFriends().stream()
+                .map(this::getUserById)
                 .collect(Collectors.toList());
     }
 }
