@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,9 +38,14 @@ public class FilmService {
         film.getLikes().remove(user.getId());
     }
 
-    public List<Film> getTopFilms() {
+    public List<Film> getTopFilms(int count) {
         return filmStorage.getAllFilms().stream()
                 .sorted(Comparator.comparingInt(film -> film.getLikes().size()))
+                .limit(count)
                 .collect(Collectors.toList());
+    }
+
+    public Film getFilmById(Long id) {
+        return filmStorage.getFilmById(id);
     }
 }

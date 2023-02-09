@@ -1,12 +1,14 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.validate.ValidationException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 @Slf4j
+@Validated
 public class FilmController {
     private static final LocalDate RELEASE_DATE_CONSTRAINT = LocalDate.of(1895, 12, 28);
     private final FilmService filmService;
@@ -40,6 +43,18 @@ public class FilmController {
     @GetMapping
     public List<Film> getAllFilms() {
         return filmService.getAllFilms();
+    }
+
+    @GetMapping("/{id}")
+    public Film getFilmById(@PathVariable Long id) {
+        return filmService.getFilmById(id);
+    }
+
+    @GetMapping("/popular")
+    public List<Film> getTopFilms(@RequestParam(name = "count", required = false, defaultValue = "10")
+                                      @Min(1)
+                                      int count) {
+        return filmService.getTopFilms(count);
     }
 
     private static void validate(Film film) {
