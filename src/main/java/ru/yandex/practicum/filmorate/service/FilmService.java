@@ -13,9 +13,11 @@ import java.util.stream.Collectors;
 public class FilmService {
 
     private final FilmStorage filmStorage;
+    private final UserService userService;
 
-    public FilmService(FilmStorage filmStorage) {
+    public FilmService(FilmStorage filmStorage, UserService userService) {
         this.filmStorage = filmStorage;
+        this.userService = userService;
     }
 
 
@@ -31,16 +33,21 @@ public class FilmService {
         return filmStorage.getAllFilms();
     }
 
-    public void addLike(User user, Film film) {
+    public void addLike(Long filmId, Long userId) {
+        Film film = filmStorage.getFilmById(filmId);
+        User user = userService.getUserById(userId);
         film.getLikes().add(user.getId());
     }
-    public void deleteLike(User user, Film film) {
+    public void deleteLike(Long filmId, Long userId) {
+        Film film = filmStorage.getFilmById(filmId);
+        User user = userService.getUserById(userId);
         film.getLikes().remove(user.getId());
     }
 
+//
     public List<Film> getTopFilms(int count) {
         return filmStorage.getAllFilms().stream()
-                .sorted(Comparator.comparingInt(film -> film.getLikes().size()))
+                .sorted(Comparator.comparingInt( (Film film) -> film.getLikes().size()).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
     }
