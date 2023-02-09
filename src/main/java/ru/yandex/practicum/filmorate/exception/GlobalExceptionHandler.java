@@ -22,6 +22,12 @@ public class GlobalExceptionHandler {
         return new ErrorMessage(e.getMessage());
     }
 
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleFilmNotFoundException(ValidationException e) {
+        return new ErrorMessage(e.getMessage());
+    }
+
     @Value
     public class ErrorMessage {
         String description;
