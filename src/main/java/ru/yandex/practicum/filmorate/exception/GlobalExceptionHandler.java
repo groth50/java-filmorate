@@ -16,6 +16,12 @@ public class GlobalExceptionHandler {
         return new ErrorMessage(e.getMessage());
     }
 
+    @ExceptionHandler(FilmNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorMessage handleFilmNotFoundException(FilmNotFoundException e) {
+        return new ErrorMessage(e.getMessage());
+    }
+
     @Value
     public class ErrorMessage {
         String description;
