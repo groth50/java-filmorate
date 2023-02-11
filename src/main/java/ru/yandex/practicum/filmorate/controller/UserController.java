@@ -66,7 +66,7 @@ public class UserController {
         return userService.getCommonFriends(id, otherId);
     }
 
-    private static void validateAndChangeUserName(User user) {
+    private void validateAndChangeUserName(User user) {
         String name = user.getName();
         if (name == null || name.isEmpty()) {
             user.setName(user.getLogin());

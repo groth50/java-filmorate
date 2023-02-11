@@ -67,7 +67,7 @@ public class FilmController {
         return filmService.getTopFilms(count);
     }
 
-    private static void validate(Film film) {
+    private void validate(Film film) {
         if (film.getReleaseDate().isBefore(RELEASE_DATE_CONSTRAINT)) {
             log.error("RELEASE_DATE_CONSTRAINT");
             throw new ValidationException("RELEASE_DATE_CONSTRAINT");
