@@ -58,6 +58,13 @@ public class GlobalExceptionHandler {
         return new ErrorMessage(errors);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessage handleAllException(Throwable e) {
+        log.error(e.getMessage());
+        return new ErrorMessage(e.getMessage());
+    }
+
     @Value
     public class ErrorMessage {
         String description;
