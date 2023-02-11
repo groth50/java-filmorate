@@ -27,7 +27,6 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
-        validate(film);
         log.info("add film");
         filmService.addFilm(film);
         return film;
@@ -35,7 +34,6 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        validate(film);
         log.info("update film");
         return filmService.updateFilm(film);
     }
@@ -65,12 +63,5 @@ public class FilmController {
                                   @Min(1)
                                   int count) {
         return filmService.getTopFilms(count);
-    }
-
-    private void validate(Film film) {
-        if (film.getReleaseDate().isBefore(RELEASE_DATE_CONSTRAINT)) {
-            log.error("RELEASE_DATE_CONSTRAINT");
-            throw new ValidationException("RELEASE_DATE_CONSTRAINT");
-        }
     }
 }
