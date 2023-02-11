@@ -21,6 +21,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        getUserById(user.getId());
         return userStorage.updateUser(user);
     }
 
@@ -54,11 +55,7 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        User user = userStorage.getUserById(id);
-        if (user == null) {
-            throw new UserNotFoundException(id);
-        }
-        return user;
+        return userStorage.getUserById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public List<User> getFriends(Long id) {

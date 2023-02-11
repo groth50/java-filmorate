@@ -28,10 +28,7 @@ public class FilmService {
 
     public Film updateFilm(Film film) {
         long id = film.getId();
-        Film filmById = filmStorage.getFilmById(id);
-        if (filmById == null) {
-            throw new FilmNotFoundException(id);
-        }
+        getFilmById(id);
         return filmStorage.updateFilm(film);
     }
 
@@ -59,10 +56,6 @@ public class FilmService {
     }
 
     public Film getFilmById(Long id) {
-        Film film = filmStorage.getFilmById(id);
-        if (film == null) {
-            throw new FilmNotFoundException(id);
-        }
-        return film;
+        return filmStorage.getFilmById(id).orElseThrow(() -> new FilmNotFoundException(id));
     }
 }
