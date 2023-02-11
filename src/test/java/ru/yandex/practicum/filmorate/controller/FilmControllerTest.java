@@ -34,7 +34,7 @@ class FilmControllerTest {
         film.setReleaseDate(BEFORE_RELEASE_DATE_CONSTRAINT);
 
         ResponseEntity<Film> response = restTemplate.postForEntity("/films", film, Film.class);
-        assertThat(response.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
+        assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     @Test
@@ -47,7 +47,7 @@ class FilmControllerTest {
         HttpEntity<Film> entity = new HttpEntity<Film>(film);
         ResponseEntity<Film> response = restTemplate.exchange("/films", HttpMethod.PUT, entity, Film.class);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
+        assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     private static Film getTestFilm() {

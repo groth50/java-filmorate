@@ -2,11 +2,14 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import ru.yandex.practicum.filmorate.validate.ReleaseDateConstraint;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class Film {
@@ -17,7 +20,10 @@ public class Film {
     @Length(max = 200)
     private String description;
     @NotNull
+    @ReleaseDateConstraint
     private LocalDate releaseDate;
     @Positive
     private int duration;
+
+    private Set<Long> likes = new HashSet<>();
 }

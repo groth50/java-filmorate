@@ -3,28 +3,26 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private static long userId = 1;
-    Map<Long, User> users = new ConcurrentHashMap<>();
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         validateAndChangeUserName(user);
-        if (user.getId() < 1) {
-            user.setId(userId);
-            userId++;
-        }
         log.info("add user {}", user);
-        users.put(user.getId(), user);
+        userService.addUser(user);
         return user;
     }
 
@@ -32,21 +30,45 @@ public class UserController {
     public User updateUser(@Valid @RequestBody User user) {
         validateAndChangeUserName(user);
         log.info("update user {}", user);
-        if (!users.containsKey(user.getId())) {
-            throw new RuntimeException();
-        }
-        users.put(user.getId(), user);
-        return user;
+        return userService.updateUser(user);
     }
 
     @GetMapping
     public List<User> getAllUsers() {
-        return List.copyOf(users.values());
+        log.info("get all users");
+        return userService.getAllUsers();
     }
 
-    private static void validateAndChangeUserName(User user) {
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        log.info("get user {}", id);
+        return userService.getUserById(id);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        log.info("add user {} to friend {}", id, friendId);
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        log.info("delete user {} to friend {}", id, friendId);
+        userService.deleteFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getFriends(@PathVariable Long id) {
+        return userService.getFriends(id);
+    }
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
+        return userService.getCommonFriends(id, otherId);
+    }
+
+    private void validateAndChangeUserName(User user) {
         String name = user.getName();
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isBlank()) {
             user.setName(user.getLogin());
         }
     }
