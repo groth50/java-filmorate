@@ -68,7 +68,7 @@ public class UserController {
 
     private void validateAndChangeUserName(User user) {
         String name = user.getName();
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isBlank()) {
             user.setName(user.getLogin());
         }
     }
