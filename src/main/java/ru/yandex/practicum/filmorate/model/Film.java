@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import ru.yandex.practicum.filmorate.model.enums.Rating;
 import ru.yandex.practicum.filmorate.validate.ReleaseDateConstraint;
 
 import javax.validation.constraints.NotBlank;
@@ -26,4 +27,7 @@ public class Film {
     private int duration;
 
     private Set<Long> likes = new HashSet<>();
+
+    private Set<Genre> genres = new HashSet<>();
+    Rating rating;
 }
