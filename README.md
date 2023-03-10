@@ -1,4 +1,4 @@
 # java-filmorate
-![filmorate (1)](https://user-images.githubusercontent.com/33160596/222946016-01ba5cfa-585c-4030-97d9-9d541bccdb6e.png)
+![filmorate](https://user-images.githubusercontent.com/33160596/224256516-8ac902fd-9d0b-434d-acbe-24ef4e7c0270.png)
 
 Template repository for Filmorate project.
